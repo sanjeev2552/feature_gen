@@ -1,0 +1,33 @@
+import 'package:equatable/equatable.dart';
+{{#methods}}
+{{#hasUseCase}}
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/usecases/{{methodNameLowerCase}}_usecase.dart';
+{{/hasUseCase}}
+{{^hasUseCase}}
+import 'package:{{projectName}}/features/shared/usecase/base_usecase.dart';
+{{/hasUseCase}}
+{{/methods}}
+
+
+abstract class {{name}}Event extends Equatable {
+    const {{name}}Event();
+
+    @override
+    List<Object?> get props => [];
+}
+
+{{#methods}}
+class {{methodNamePascalCase}}Event extends {{name}}Event {
+    {{#hasUseCase}}
+    final {{methodNamePascalCase}}Params param;
+    {{/hasUseCase}}
+    {{^hasUseCase}}
+    final NoParams param;
+    {{/hasUseCase}}
+
+    const {{methodNamePascalCase}}Event({{#hasUseCase}}this.param{{/hasUseCase}} {{^hasUseCase}} {this.param =  const NoParams()}{{/hasUseCase}});
+
+    @override
+    List<Object?> get props => [{{#hasUseCase}}param{{/hasUseCase}}];
+}
+{{/methods}}

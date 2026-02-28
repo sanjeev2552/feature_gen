@@ -1,0 +1,82 @@
+import 'package:{{projectName}}/features/shared/usecase/base_usecase.dart';
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/entities/{{nameLowerCase}}_entity.dart';
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/repositories/{{nameLowerCase}}_repository.dart';
+
+{{#hasParams}}
+class {{methodNamePascalCase}}PathParams {
+    {{#params}}
+    final {{type}}? {{name}};
+    {{/params}}
+
+    {{methodNamePascalCase}}PathParams({
+        {{#params}}
+        this.{{name}},
+        {{/params}}
+    });
+}
+{{/hasParams}}
+
+{{#hasBody}}
+class {{methodNamePascalCase}}BodyParams {
+    {{#body}}
+    final {{type}}? {{name}};
+    {{/body}}
+
+    {{methodNamePascalCase}}BodyParams({
+        {{#body}}
+        this.{{name}},
+        {{/body}}
+    });
+}
+{{/hasBody}}
+
+{{#hasQuery}}
+class {{methodNamePascalCase}}QueryParams {
+    {{#query}}
+    final {{type}}? {{name}};
+    {{/query}}
+
+    {{methodNamePascalCase}}QueryParams({
+        {{#query}}
+        this.{{name}},
+        {{/query}}
+    });
+}
+{{/hasQuery}}
+
+{{#hasUseCase}}
+class {{methodNamePascalCase}}Params {
+    {{#hasParams}}
+    final {{methodNamePascalCase}}PathParams pathParams;
+    {{/hasParams}}
+    {{#hasBody}}
+    final {{methodNamePascalCase}}BodyParams bodyParams;
+    {{/hasBody}}
+    {{#hasQuery}}
+    final {{methodNamePascalCase}}QueryParams queryParams;
+    {{/hasQuery}}
+
+    {{methodNamePascalCase}}Params({
+        {{#hasParams}}
+        required this.pathParams,
+        {{/hasParams}}
+        {{#hasBody}}
+        required this.bodyParams,
+        {{/hasBody}}
+        {{#hasQuery}}
+        required this.queryParams,
+        {{/hasQuery}}
+    });
+}
+{{/hasUseCase}}
+
+class {{methodNamePascalCase}}UseCase extends BaseUseCase<{{name}}Entity, {{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}}> {
+    final {{name}}Repository {{nameCamelCase}}Repository;
+
+    {{methodNamePascalCase}}UseCase(this.{{nameCamelCase}}Repository);
+
+    @override
+    Future<{{name}}Entity> call({{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}} params) async {
+        return {{nameCamelCase}}Repository.{{methodName}}({{#hasUseCase}} params {{/hasUseCase}});
+    }
+}

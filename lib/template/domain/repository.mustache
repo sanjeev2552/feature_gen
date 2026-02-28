@@ -1,0 +1,12 @@
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/entities/{{nameLowerCase}}_entity.dart';
+{{#methods}}
+{{#hasUseCase}}
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/usecases/{{methodNameLowerCase}}_usecase.dart';
+{{/hasUseCase}}
+{{/methods}}
+
+abstract class {{name}}Repository {
+    {{#methods}}
+        Future<{{name}}Entity> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}});
+    {{/methods}}
+}

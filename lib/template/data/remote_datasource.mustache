@@ -1,0 +1,16 @@
+import 'package:{{projectName}}/features/{{nameLowerCase}}/data/models/{{nameLowerCase}}_model.dart';
+{{#methods}}
+{{#hasUseCase}}
+import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/usecases/{{methodNameLowerCase}}_usecase.dart';
+{{/hasUseCase}}
+{{/methods}}
+import 'package:injectable/injectable.dart';
+
+@lazySingleton
+class {{name}}RemoteDatasource {
+    {{#methods}}
+        Future<{{name}}Model> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}}) async {
+            throw UnimplementedError();
+        }
+    {{/methods}}
+}
