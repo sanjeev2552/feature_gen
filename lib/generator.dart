@@ -118,8 +118,8 @@ class Generator {
     // Use Cases
     if (context.generateUseCase) {
       renderTemplate(
-        '$templateBasePath/base_usecase.mustache',
-        '${context.projectRoot}/lib/features/shared/usecase/base_usecase.dart',
+        '$templateBasePath/usecase.mustache',
+        '${context.projectRoot}/lib/features/shared/usecase/usecase.dart',
         context.toMap(),
       );
 
@@ -129,6 +129,7 @@ class Generator {
           '$basePath/domain/usecases/${method.methodName.camelCaseToSnakeCase()}_usecase.dart',
           {
             'name': context.name,
+            'isList': context.isList,
             'nameLowerCase': context.nameLowerCase,
             'nameCamelCase': context.nameCamelCase,
             'projectName': context.projectName,
@@ -178,6 +179,7 @@ class Generator {
         '$basePath/presentation/bloc/${featureName}_state.dart',
         {
           'name': context.name,
+          'isList': context.isList,
           'nameLowerCase': context.nameLowerCase,
           'nameCamelCase': context.nameCamelCase,
           ...context.toMap(),

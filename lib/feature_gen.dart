@@ -39,7 +39,10 @@ class FeatureGen {
       }
 
       // Format project files to keep output consistent.
-      await CommandRunner().runFormat(workingDirectory: context.projectRoot);
+      await CommandRunner().runFormat(
+        featureName: featureName,
+        workingDirectory: context.projectRoot,
+      );
 
       CommandHelper().success('Feature $featureName generated successfully');
     } catch (e, stack) {

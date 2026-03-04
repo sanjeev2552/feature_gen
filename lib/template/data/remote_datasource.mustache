@@ -9,7 +9,7 @@ import 'package:injectable/injectable.dart';
 @lazySingleton
 class {{name}}RemoteDatasource {
     {{#methods}}
-        Future<{{name}}Model> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}}) async {
+        Future<{{#isList}}List<{{/isList}}{{name}}Model{{#isList}}>{{/isList}}> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}}) async {
             throw UnimplementedError();
         }
     {{/methods}}

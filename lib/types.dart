@@ -7,16 +7,29 @@ class Schema {
   final Map<String, dynamic>? response;
   final Config? config;
 
-  Schema({this.api, this.response, this.config});
+  /// Whether the response is an array at the root level.
+  final bool isList;
+
+  Schema({this.api, this.response, this.config, this.isList = false});
 
   factory Schema.fromJson(Map<String, dynamic> json) {
+    final (response, isList) = responseParser(json['response']);
     return Schema(
       api: json['api'] == null ? null : Api.fromJson(json['api'] as Map<String, dynamic>),
-      response: json['response'] as Map<String, dynamic>?,
+      response: response,
       config: json['config'] == null
           ? null
           : Config.fromJson(json['config'] as Map<String, dynamic>),
+      isList: isList,
     );
+  }
+
+  /// Unwraps array responses, returning the inner element map and a flag.
+  static (Map<String, dynamic>, bool) responseParser(dynamic response) {
+    if (response is List) {
+      return (response.first, true);
+    }
+    return (response, false);
   }
 }
 
@@ -217,6 +230,7 @@ class Context {
   final String name;
   final String nameLowerCase;
   final String nameCamelCase;
+  final bool isList;
   final List<NestedContextField> fields;
   final List<ContextMethod> methods;
   final bool generateUseCase;
@@ -228,6 +242,7 @@ class Context {
     required this.name,
     required this.nameLowerCase,
     required this.nameCamelCase,
+    required this.isList,
     required this.fields,
     required this.methods,
     required this.generateUseCase,
@@ -241,6 +256,7 @@ class Context {
       'name': name,
       'nameLowerCase': nameLowerCase,
       'nameCamelCase': nameCamelCase,
+      'isList': isList,
       'fields': fields.map((field) => field.toMap()).toList(),
       'methods': methods.map((method) => method.toMap()).toList(),
       'generateUseCase': generateUseCase,

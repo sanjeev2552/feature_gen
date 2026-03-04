@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.3
+
+### Features
+
+- **List Response Support** — Response arrays (`[{...}]`) are automatically detected and propagated as `List<Entity>` across all generated layers (entity, model, repository, datasource, usecase, bloc state, and riverpod notifier).
+
+### Improvements
+
+- **Scoped Formatting** — `dart format` now targets only the generated feature directory instead of the entire project.
+
 ## 1.2.2
 
 ### Docs

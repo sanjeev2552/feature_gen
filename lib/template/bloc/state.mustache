@@ -7,6 +7,6 @@ part '{{nameLowerCase}}_state.freezed.dart';
 abstract class {{name}}State with _${{name}}State {
     const factory {{name}}State.initial() = _InitialState;
     const factory {{name}}State.loading() = _LoadingState;
-    const factory {{name}}State.success({{name}}Entity {{nameCamelCase}}) = _SuccessState;
+    const factory {{name}}State.success({{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}} {{nameCamelCase}}) = _SuccessState;
     const factory {{name}}State.error(String message) = _ErrorState;
 }

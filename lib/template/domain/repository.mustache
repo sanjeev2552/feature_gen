@@ -7,6 +7,6 @@ import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/usecases/{{met
 
 abstract class {{name}}Repository {
     {{#methods}}
-        Future<{{name}}Entity> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}});
+        Future<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}});
     {{/methods}}
 }

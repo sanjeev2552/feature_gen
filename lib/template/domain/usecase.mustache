@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:{{projectName}}/features/shared/usecase/base_usecase.dart';
+import 'package:{{projectName}}/features/shared/usecase/usecase.dart';
 import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/entities/{{nameLowerCase}}_entity.dart';
 import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/repositories/{{nameLowerCase}}_repository.dart';
 
@@ -78,13 +78,13 @@ class {{methodNamePascalCase}}Params {
 {{/hasUseCase}}
 
 @injectable
-class {{methodNamePascalCase}}UseCase extends BaseUseCase<{{name}}Entity, {{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}}> {
+class {{methodNamePascalCase}}UseCase extends UseCase<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}, {{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}}> {
     final {{name}}Repository {{nameCamelCase}}Repository;
 
     {{methodNamePascalCase}}UseCase(this.{{nameCamelCase}}Repository);
 
     @override
-    Future<{{name}}Entity> call({{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}} params) async {
+    Future<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}> call({{#hasUseCase}} {{methodNamePascalCase}}Params {{/hasUseCase}} {{^hasUseCase}} NoParams {{/hasUseCase}} params) async {
         return {{nameCamelCase}}Repository.{{methodName}}({{#hasUseCase}} params {{/hasUseCase}});
     }
 }

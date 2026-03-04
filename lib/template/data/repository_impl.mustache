@@ -17,9 +17,9 @@ class {{name}}RepositoryImpl implements {{name}}Repository {
 
     {{#methods}}
         @override
-        Future<{{name}}Entity> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}}) async {
+        Future<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}> {{methodName}}({{#hasUseCase}} {{methodNamePascalCase}}Params params {{/hasUseCase}}) async {
             final model = await {{nameCamelCase}}RemoteDatasource.{{methodName}}({{#hasUseCase}} params {{/hasUseCase}});
-            return model.toEntity();
+            return {{#isList}}model.map((e) => e.toEntity()).toList(){{/isList}}{{^isList}}model.toEntity(){{/isList}};
         }
     {{/methods}}
 }

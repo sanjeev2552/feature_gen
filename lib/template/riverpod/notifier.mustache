@@ -9,7 +9,7 @@ import 'package:{{projectName}}/features/shared/usecase/base_usecase.dart';
 {{/methods}}
 
 @injectable
-class {{name}}Notifier extends AsyncNotifier<{{name}}Entity?> {
+class {{name}}Notifier extends AsyncNotifier<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}?> {
     {{#methods}}
     final {{methodNamePascalCase}}UseCase {{methodName}}UseCase;
     {{/methods}}
@@ -21,7 +21,7 @@ class {{name}}Notifier extends AsyncNotifier<{{name}}Entity?> {
     });
 
     @override
-    Future<{{name}}Entity?> build() async {
+    Future<{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}?> build() async {
         return null;
     }
 

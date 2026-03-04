@@ -116,6 +116,21 @@ Methods with no sections (e.g. `"getUser": {}`) generate only the repository/dat
 
 Defines the fields for the entity and model classes. Keys are field names, values are types.
 
+To indicate a **list response**, wrap the response object in an array:
+
+```json
+{
+  "response": [
+    {
+      "id": "int",
+      "name": "string"
+    }
+  ]
+}
+```
+
+This generates `List<Entity>` return types across all layers (repository, datasource, usecase, bloc state, riverpod notifier).
+
 ### Supported Types
 
 | Schema Value | Dart Type              |
@@ -174,7 +189,7 @@ lib/features/shared/usecase/base_usecase.dart
 1. **Checks & installs dependencies** — Adds missing packages (`flutter_bloc`, `flutter_riverpod`, `freezed`, `get_it`, `injectable`, etc.) to the target project's `pubspec.yaml` based on your `config`.
 2. **Generates feature files** — Renders all Dart files from Mustache templates following clean architecture.
 3. **Runs `build_runner`** — Triggers code generation for Freezed models and JSON serialization.
-4. **Formats code** — Runs `dart format .` on the entire project.
+4. **Formats code** — Runs `dart format` on the generated feature directory.
 
 ## Required Dependencies
 

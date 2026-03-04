@@ -107,10 +107,13 @@ class CommandRunner {
     return buildExitCode;
   }
 
-  /// Runs `dart format .` in the target project.
+  /// Runs `dart format` on the generated feature directory.
   ///
-  /// This keeps generated code aligned with standard Dart formatting.
-  Future<void> runFormat({required String workingDirectory}) async {
-    await _runCommand('dart', ['format', '.'], workingDirectory: workingDirectory);
+  /// Scoped to [featureName] so only generated files are touched.
+  Future<void> runFormat({required String featureName, required String workingDirectory}) async {
+    await _runCommand('dart', [
+      'format',
+      'lib/features/$featureName',
+    ], workingDirectory: workingDirectory);
   }
 }
