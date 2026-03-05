@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.3+1
+
+### Docs
+
+- **Pub Badges** — Added `pub package`, `license`, and `pub points` badges to `README.md`.
+- **Pubspec Topics** — Added topic tags (`flutter`, `cli`, `code-generation`, `clean-architecture`, `architecture`) for pub.dev discoverability.
+
 ## 1.2.3
 
 ### Features

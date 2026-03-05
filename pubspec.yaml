@@ -1,6 +1,6 @@
 name: feature_gen_cli
 description: A command-line tool for generating feature modules.
-version: 1.2.3
+version: 1.2.3+1
 
 repository: https://github.com/sanjeev2552/feature_gen
 homepage: https://github.com/sanjeev2552/feature_gen
@@ -21,3 +21,10 @@ dev_dependencies:
 
 executables:
   feature_gen_cli:
+
+topics:
+  - flutter
+  - cli
+  - code-generation
+  - clean-architecture
+  - architecture
