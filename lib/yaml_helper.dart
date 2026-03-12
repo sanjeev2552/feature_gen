@@ -7,7 +7,8 @@ import 'package:yaml/yaml.dart';
 /// Reads metadata (version, project name, dependencies) from `pubspec.yaml` files.
 ///
 /// This helper isolates YAML parsing so other classes can remain focused
-/// on generation and CLI behavior.
+/// on generation and CLI behavior. It reads the installed package pubspec
+/// for version info and the target project pubspec for names/dependencies.
 class YamlHelper {
   /// Returns the version of the `feature_gen_cli` package from its own pubspec.
   Future<String?> getVersion() async {

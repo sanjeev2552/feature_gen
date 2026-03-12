@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.2
+
+### Docs
+
+- **README Overhaul** — Expanded project documentation with requirements, quick start, schema reference, naming conventions, CLI side effects, and troubleshooting guidance.
+- **Dartdoc Enhancements** — Refined file-level doc comments across CLI, generator, parser, helpers, types, and example entrypoint for clearer behavior and assumptions.
+
 ## 1.3.1
 
 ### Docs

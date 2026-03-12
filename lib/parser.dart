@@ -11,7 +11,8 @@ import 'package:feature_gen_cli/yaml_helper.dart';
 /// The parser is intentionally strict about required sections so generated code
 /// is predictable and templates can rely on stable fields. It also builds
 /// nested field graphs so templates can emit models for complex payloads and
-/// enforces presentation configuration.
+/// enforces presentation configuration. The current working directory is used
+/// as the target project root for `pubspec.yaml` lookup.
 class Parser {
   /// Reads and deserialises the JSON schema file at [path] into a [Schema].
   Schema parse(String path) {

@@ -1,7 +1,8 @@
 /// Case-conversion utilities for code generation.
 ///
 /// These helpers are intentionally small and predictable, aimed at
-/// transforming snake/camel case identifiers used in templates.
+/// transforming snake_case and camelCase identifiers used in templates.
+/// They assume simple ASCII inputs and do not handle locale-specific casing.
 extension StringExtension on String {
   /// Converts `snake_case` → `PascalCase`.
   String toPascalCase() {

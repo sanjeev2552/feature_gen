@@ -5,7 +5,7 @@ import 'package:feature_gen_cli/yaml_helper.dart';
 /// Handles styled console output (errors, success, warnings) and CLI help/version.
 ///
 /// This class centralizes formatting and exit behavior so the CLI stays
-/// consistent and easy to maintain.
+/// consistent and easy to maintain. Error/success methods may exit the process.
 class CommandHelper {
   /// Prints a red error [message] and exits with code 1.
   void error(String message) {

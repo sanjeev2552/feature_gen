@@ -1,7 +1,8 @@
 /// Top-level schema representation parsed from the user's JSON file.
 ///
 /// This mirrors the user-provided schema shape closely to keep parsing simple,
-/// while enabling nested response trees and presentation configuration.
+/// while enabling nested response trees and presentation configuration for
+/// code generation.
 class Schema {
   final Api? api;
   final Map<String, dynamic>? response;
@@ -62,8 +63,8 @@ class Config {
 
 /// Represents the `api` section of the schema.
 ///
-/// The API section currently focuses on method contracts (params/body/query)
-/// that drive request model generation.
+/// The API section focuses on method contracts (params/body/query)
+/// that drive request model generation and use-case wiring.
 class Api {
   final Methods? methods;
 
@@ -125,7 +126,7 @@ class ApiMethod {
 /// Template-ready representation of an API method.
 ///
 /// Params/body/query are represented as nested field trees so templates can
-/// generate request models.
+/// generate request models and parameter classes.
 class ContextMethod {
   final String methodName;
   final String methodNamePascalCase;

@@ -7,9 +7,10 @@ import 'package:feature_gen_cli/parser.dart';
 /// Orchestrates the full feature generation pipeline:
 /// parse → deps → generate → build_runner → format.
 ///
-/// The pipeline intentionally favors developer ergonomics:
-/// it installs missing dependencies, generates code, runs build_runner,
-/// and formats output so the project is ready to compile immediately.
+/// The pipeline favors developer ergonomics: it installs missing dependencies,
+/// generates code, runs build_runner, and formats output so the project is
+/// ready to compile immediately. It uses the current working directory as the
+/// target project root and reports errors through [CommandHelper].
 class FeatureGen {
   /// Runs the complete pipeline using the parsed CLI [results].
   Future<void> generate(ArgResults results) async {

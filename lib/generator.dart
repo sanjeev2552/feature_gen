@@ -10,7 +10,8 @@ import 'package:mustache_template/mustache.dart';
 ///
 /// The generator is file-system focused and deliberately avoids business logic.
 /// It expects a fully prepared [Context] and respects the configured
-/// presentation layer (bloc or riverpod).
+/// presentation layer (bloc or riverpod). Existing generated files are
+/// overwritten when the same paths are produced.
 class Generator {
   /// Creates directories and generates all boilerplate files for the feature.
   Future<void> generateFeature(Context context) async {

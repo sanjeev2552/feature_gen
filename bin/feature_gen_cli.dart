@@ -4,8 +4,10 @@ import 'package:feature_gen_cli/feature_gen.dart';
 
 /// CLI entry point for the `feature_gen_cli` executable.
 ///
-/// This function is intentionally small: it parses CLI flags, validates the
-/// required positional args, and then delegates to [FeatureGen.generate].
+/// This entry point is intentionally small: it parses flags, validates the
+/// required positional arguments, and then delegates to [FeatureGen.generate].
+/// Run this from a Flutter project root so relative schema paths and
+/// `pubspec.yaml` resolution work as expected.
 Future<void> main(List<String> arguments) async {
   final parser = ArgParser()
     ..addFlag('help', abbr: 'h')

@@ -6,10 +6,13 @@ import 'package:feature_gen_cli/yaml_helper.dart';
 
 /// Executes shell commands for dependency management, build_runner, and formatting.
 ///
-/// All external process calls are funneled through this class so that
-/// logging and error handling are consistent across the CLI.
+/// All external process calls are funneled through this class so logging and
+/// error handling stay consistent across the CLI. These operations mutate the
+/// target project's `pubspec.yaml` and generated files.
 class CommandRunner {
   /// Runs [executable] with [args] and forwards output. Returns the exit code.
+  ///
+  /// Output is streamed to stdout/stderr so callers can surface actionable logs.
   Future<int> _runCommand(String executable, List<String> args, {String? workingDirectory}) async {
     final result = await Process.run(executable, args, workingDirectory: workingDirectory);
 
@@ -88,7 +91,7 @@ class CommandRunner {
 
   /// Runs `dart run build_runner build -d` in the target project.
   ///
-  /// We return the exit code so the caller can decide whether to warn or abort.
+  /// Returns the exit code so the caller can decide whether to warn or abort.
   Future<int> runBuildRunner({required String workingDirectory}) async {
     stdout.writeln('');
 
