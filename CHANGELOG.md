@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.3
+
+### Docs
+
+- **README Update** — Condensed documentation for quicker reading.
+
 ## 1.3.2
 
 ### Docs

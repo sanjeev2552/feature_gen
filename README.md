@@ -4,212 +4,64 @@
 
 Feature Gen is a Dart CLI that scaffolds clean-architecture feature modules for Flutter projects from a JSON schema.
 
-## Requirements
-
-- Dart SDK `>=3.10.4`
-- A Flutter project with a valid `pubspec.yaml`
-- `dart` available on your PATH
-
-## Installation
-
-```bash
-dart pub global activate feature_gen_cli
-```
-
 ## Quick Start
 
-1. From your Flutter project root, create a schema file (see `example/user_schema.json`).
-2. Run the generator:
+**Requirements:** Dart SDK `>=3.10.4`, a Flutter project with a valid `pubspec.yaml`, and `dart` on your PATH.
 
 ```bash
-feature_gen_cli user schema.json
-```
+# 1. Install
+dart pub global activate feature_gen_cli
 
-This creates `lib/features/user/` plus supporting files, installs missing deps, runs `build_runner`, and formats the generated code.
-
-## Usage
-
-```bash
+# 2. Run
 feature_gen_cli <feature_name> <schema.json>
-```
-
-### Flags
-
-| Flag              | Description               |
-| ----------------- | ------------------------- |
-| `-h`, `--help`    | Show usage information    |
-| `-v`, `--version` | Print the current version |
-
-### Example
-
-```bash
-feature_gen_cli user example/user_schema.json
+# Example: feature_gen_cli user example/user_schema.json
 ```
 
 ## Schema Reference
 
-The schema is a single JSON file with three required sections: `config`, `api.methods`, and `response`.
-
-### Minimal Schema
+The schema is a single JSON file requiring three sections: `config`, `api.methods`, and `response`.
 
 ```json
 {
   "config": { "bloc": true, "riverpod": false },
-  "api": { "methods": { "getUser": {} } },
+  "api": { 
+    "methods": { 
+      "getUser": {},
+      "updateUser": { "body": { "name": "string", "email": "string" } },
+      "deleteUser": { "params": { "id": "int" } }
+    } 
+  },
   "response": { "id": "int", "name": "string" }
 }
 ```
 
-### `config`
-
-Exactly one of these must be `true`:
-
-- `bloc` generates BLoC + Event + State.
-- `riverpod` generates a Riverpod `Notifier`.
-
-### `api.methods`
-
-Each key is a method name (camelCase). Each method may include any of:
-
-- `params` path parameters
-- `body` request body fields
-- `query` query parameters
-
-A method that defines at least one of `params`, `body`, or `query` will also get a generated `UseCase` and params classes. Empty methods still generate the repository + datasource wiring.
-
-Example:
-
-```json
-{
-  "api": {
-    "methods": {
-      "getUser": {},
-      "updateUser": {
-        "body": { "name": "string", "email": "string" }
-      },
-      "deleteUser": {
-        "params": { "id": "int" }
-      }
-    }
-  }
-}
-```
-
-### `response`
-
-Defines the base entity/model fields. Keys are field names; values are types.
-
-List responses are expressed by wrapping the response object in an array:
-
-```json
-{ "response": [ { "id": "int", "name": "string" } ] }
-```
-
-### Supported Types
-
-| Schema Value | Dart Type              |
-| ------------ | ---------------------- |
-| `"string"`  | `String`               |
-| `"int"`     | `int`                  |
-| `"double"`  | `double`               |
-| `"bool"`    | `bool`                 |
-| `"list"`    | `List<dynamic>`        |
-| `"map"`     | `Map<String, dynamic>` |
-| `{ ... }`    | Custom model           |
-| `[{ ... }]`  | `List<CustomModel>`    |
-
-You can also use literal JSON values (e.g. `123` → `int`, `true` → `bool`). Nested objects and lists of objects are automatically lifted into their own Freezed models/entities based on the field name.
-
-### Naming Conventions
-
-- `feature_name` is expected to be `snake_case` (used for folder names and class conversions).
-- Method keys in `api.methods` should be `camelCase` (used to generate class and file names).
+- **`config`**: Enable exactly one state management option (`bloc` or `riverpod`).
+- **`api.methods`**: Define endpoints (camelCase). Optionally include `params`, `body`, or `query` to generate `UseCase` and param classes.
+- **`response`**: Define base entity/model fields. Wrap in an array for lists (e.g., `[ { "id": "int" } ]`). Supports primitives (`"string"`, `"int"`, `"double"`, `"bool"`, `"list"`, `"map"`) and nested objects.
 
 ## Generated Structure
 
-Running `feature_gen_cli user schema.json` produces:
+Running the CLI produces a complete clean-architecture module in `lib/features/<feature_name>/` containing:
+- **data/**: Datasources, models, and repository implementations.
+- **domain/**: Entities, repository interfaces, and usecases.
+- **presentation/**: BLoC/Notifier and screens.
 
-```
-lib/
-├── core/
-│   └── di/
-│       └── injector.dart
-└── features/user/
-├── data/
-│   ├── datasources/
-│   │   └── user_remote_datasource.dart
-│   ├── models/
-│   │   └── user_model.dart
-│   └── repositories/
-│       └── user_repository_impl.dart
-├── domain/
-│   ├── entities/
-│   │   └── user_entity.dart
-│   ├── repositories/
-│   │   └── user_repository.dart
-│   └── usecases/
-│       ├── get_user_usecase.dart
-│       ├── update_user_usecase.dart
-│       └── delete_user_usecase.dart
-└── presentation/
-    ├── bloc/ (if enabled)
-    │   ├── user_bloc.dart
-    │   ├── user_event.dart
-    │   └── user_state.dart
-    ├── riverpod/ (if enabled)
-    │   └── user_notifier.dart
-    └── screen/
-        └── user_screen.dart
-```
-
-If any method has params/body/query, a shared base use-case is also created at:
-
-```
-lib/features/shared/usecase/base_usecase.dart
-```
-
-## What the CLI Changes
-
-- Adds missing dependencies using `dart pub add`.
-- Generates files in `lib/features/<feature_name>/` and `lib/core/di/injector.dart`.
-- Runs `dart run build_runner build -d`.
-- Formats the generated feature directory with `dart format`.
-- Overwrites any previously generated files with the same paths.
+The CLI automatically adds missing dependencies, runs `build_runner`, and formats the generated code.
 
 ## Troubleshooting
 
-- **Schema validation errors**: ensure `config`, `api.methods`, and `response` exist, and that exactly one of `config.bloc` or `config.riverpod` is `true`.
-- **`build_runner` failed**: re-run it manually in your project root:
+- **Schema validation errors**: Ensure `config`, `api.methods`, and `response` exist, and that exactly one of `config.bloc` or `config.riverpod` is `true`.
+- **`build_runner` failed**: Re-run it manually: `dart run build_runner build -d`.
 
-```bash
-dart run build_runner build -d
-```
+## Support ❤️
 
-- **Dependencies not added**: check that you have write access to `pubspec.yaml` and that `dart pub add` succeeds in the same project.
-
-## Project Structure
-
-```
-feature_gen/
-├── bin/feature_gen_cli.dart        # CLI entry point
-├── lib/
-│   ├── feature_gen.dart            # Pipeline orchestrator
-│   ├── parser.dart                 # JSON schema parser & context builder
-│   ├── generator.dart              # Directory creation & template rendering
-│   ├── command_runner.dart         # Shell command execution (deps, build, format)
-│   ├── command_helper.dart         # Styled console output (errors, success, warnings)
-│   ├── types.dart                  # Data models (Schema, Context, etc.)
-│   ├── string_extension.dart       # Case-conversion utilities
-│   ├── yaml_helper.dart            # pubspec.yaml reader
-│   └── template/                   # Mustache template files
-└── pubspec.yaml
-```
+If you find this package helpful, please consider giving it a like on [pub.dev](https://pub.dev/packages/feature_gen_cli) and adding a ⭐ star on [GitHub](https://github.com/sanjeev2552/feature_gen)! Your support is greatly appreciated.
 
 ## Contributing
 
-- Install dependencies with `dart pub get`.
-- Run tests with `dart test`.
-- Keep formatting clean with `dart format .`.
+- Install dependencies: `dart pub get`
+- Run tests: `dart test`
+- Format code: `dart format .`
 
 ## License
 
