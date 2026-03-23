@@ -18,6 +18,9 @@ feature_gen_cli <feature_name> <schema.json>
 
 # Overwrite existing generated files (optional)
 feature_gen_cli <feature_name> <schema.json> --overwrite
+
+# Generate from annotation (optional)
+feature_gen_cli --input feature/user.dart
 ```
 
 ## Schema Reference
@@ -54,6 +57,25 @@ The CLI automatically adds missing dependencies, runs `build_runner`, and format
 ## Overwrite Behavior
 
 By default, the CLI only generates missing files and will not overwrite existing files. Use `--overwrite` (or `-o`) to force regeneration.
+
+## Annotation Input
+
+You can annotate a Dart file with `@FeatureGenCli` and point the CLI at it:
+
+```dart
+import 'package:feature_gen_cli/feature_gen_annotation.dart';
+
+@FeatureGenCli(
+  name: "user",
+  schema: "path/to/schema.json",
+)
+```
+
+Then run:
+
+```bash
+feature_gen_cli --input feature/user.dart
+```
 
 ## Troubleshooting
 

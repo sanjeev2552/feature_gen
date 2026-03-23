@@ -47,6 +47,8 @@ Common commands:
 
   dart tool/feature_gen_cli.dart <feature_name> <schema.json>
     Generate a new feature module using the provided feature name and schema definition.
+  dart tool/feature_gen_cli.dart --input feature/user.dart
+    Generate a feature module by reading @FeatureGenCli annotation in the input file.
 
 Required parameters:
 
@@ -59,6 +61,7 @@ Required parameters:
 
 Global options:
   -h, --help        Show this help message.
+  -i, --input       Path to Dart file containing @FeatureGenCli annotation.
   -o, --overwrite   Overwrite existing generated files.
       --version:    Print the current version.
   

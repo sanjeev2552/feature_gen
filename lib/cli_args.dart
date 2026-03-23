@@ -4,6 +4,7 @@ import 'package:args/args.dart';
 ArgParser buildArgParser() {
   return ArgParser()
     ..addFlag('help', abbr: 'h')
+    ..addOption('input', abbr: 'i', help: 'Dart file containing @FeatureGenCli annotation.')
     ..addFlag('overwrite', abbr: 'o', help: 'Overwrite existing generated files.')
     ..addFlag('version', abbr: 'v');
 }

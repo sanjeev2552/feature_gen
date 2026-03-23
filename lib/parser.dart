@@ -34,9 +34,10 @@ class Parser {
   /// Returns an empty context if validation fails. The caller is expected to
   /// halt or surface the error to the user. Response fields are collected into
   /// a nested tree with a root node matching the feature name.
-  Future<Context> buildContext(String featureName, Schema schema) async {
-    final projectRoot = Directory.current.path;
-    final projectName = await YamlHelper().getProjectName(workingDirectory: projectRoot);
+  /// Optionally override the project root for tests.
+  Future<Context> buildContext(String featureName, Schema schema, {String? projectRoot}) async {
+    final resolvedRoot = projectRoot ?? Directory.current.path;
+    final projectName = await YamlHelper().getProjectName(workingDirectory: resolvedRoot);
 
     if (!validateSchema(schema)) {
       return Context(
@@ -47,7 +48,7 @@ class Parser {
         fields: [],
         methods: [],
         generateUseCase: false,
-        projectRoot: projectRoot,
+        projectRoot: resolvedRoot,
         projectName: projectName,
         config: Config(),
       );
@@ -83,7 +84,7 @@ class Parser {
       fields: contextFields,
       methods: methods,
       generateUseCase: generateUseCase,
-      projectRoot: projectRoot,
+      projectRoot: resolvedRoot,
       projectName: projectName,
       config: schema.config ?? Config(),
     );

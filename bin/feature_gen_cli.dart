@@ -23,7 +23,7 @@ Future<void> main(List<String> arguments) async {
     return;
   }
 
-  if (results.rest.length < 2) {
+  if (results['input'] == null && results.rest.length < 2) {
     CommandHelper().error('Usage: feature_gen_cli <feature_name> <schema.json>');
     return;
   }

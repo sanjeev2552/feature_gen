@@ -102,12 +102,17 @@ class FakeParser extends Parser {
 
   final Schema _schema;
   final Context _context;
+  String? lastPath;
 
   @override
-  Schema parse(String path) => _schema;
+  Schema parse(String path) {
+    lastPath = path;
+    return _schema;
+  }
 
   @override
-  Future<Context> buildContext(String featureName, Schema schema) async => _context;
+  Future<Context> buildContext(String featureName, Schema schema, {String? projectRoot}) async =>
+      _context;
 }
 
 class FakeGenerator extends Generator {

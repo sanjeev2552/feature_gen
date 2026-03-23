@@ -56,13 +56,10 @@ void main() {
       required String featureName,
     }) async {
       writePubspec(projectDir, name: 'sample_app');
-      final previous = Directory.current;
-      Directory.current = projectDir.path;
-      addTearDown(() => Directory.current = previous);
 
       final parser = Parser(commandHelper: TestCommandHelper());
       final schema = Schema.fromJson(schemaJson);
-      return parser.buildContext(featureName, schema);
+      return parser.buildContext(featureName, schema, projectRoot: projectDir.path);
     }
 
     test('generates BLoC files and usecases, not riverpod notifier', () async {

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.6
+
+### Features
+
+- **Annotation Input** — Added `--input` (`-i`) to generate from a Dart file annotated with `@FeatureGenCli`.
+
+### Docs
+
+- **README + Help** — Documented annotation-based input and new CLI flag.
+
 ## 1.3.5
 
 ### Tests

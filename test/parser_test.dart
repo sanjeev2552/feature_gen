@@ -50,16 +50,13 @@ void main() {
   group('Parser.buildContext', () {
     test('builds context with correct naming and usecase flags', () async {
       final tempDir = Directory.systemTemp.createTempSync('feature_gen_test_');
-      addTearDown(() => tempDir.deleteSync(recursive: true));
       writePubspec(tempDir, name: 'sample_app');
 
-      final previous = Directory.current;
-      Directory.current = tempDir.path;
-      addTearDown(() => Directory.current = previous);
+      addTearDown(() => tempDir.deleteSync(recursive: true));
 
       final parser = Parser(commandHelper: TestCommandHelper());
       final schema = Schema.fromJson(blocSchema());
-      final context = await parser.buildContext('user_profile', schema);
+      final context = await parser.buildContext('user_profile', schema, projectRoot: tempDir.path);
 
       expect(context.name, 'UserProfile');
       expect(context.nameLowerCase, 'user_profile');
@@ -71,32 +68,26 @@ void main() {
 
     test('marks list response at root', () async {
       final tempDir = Directory.systemTemp.createTempSync('feature_gen_test_');
-      addTearDown(() => tempDir.deleteSync(recursive: true));
       writePubspec(tempDir, name: 'sample_app');
 
-      final previous = Directory.current;
-      Directory.current = tempDir.path;
-      addTearDown(() => Directory.current = previous);
+      addTearDown(() => tempDir.deleteSync(recursive: true));
 
       final parser = Parser(commandHelper: TestCommandHelper());
       final schema = Schema.fromJson(listResponseSchema());
-      final context = await parser.buildContext('users', schema);
+      final context = await parser.buildContext('users', schema, projectRoot: tempDir.path);
 
       expect(context.isList, isTrue);
     });
 
     test('captures nested fields for params/body/query', () async {
       final tempDir = Directory.systemTemp.createTempSync('feature_gen_test_');
-      addTearDown(() => tempDir.deleteSync(recursive: true));
       writePubspec(tempDir, name: 'sample_app');
 
-      final previous = Directory.current;
-      Directory.current = tempDir.path;
-      addTearDown(() => Directory.current = previous);
+      addTearDown(() => tempDir.deleteSync(recursive: true));
 
       final parser = Parser(commandHelper: TestCommandHelper());
       final schema = Schema.fromJson(blocSchema());
-      final context = await parser.buildContext('user', schema);
+      final context = await parser.buildContext('user', schema, projectRoot: tempDir.path);
       final update = context.methods.firstWhere((m) => m.methodName == 'updateUser');
 
       expect(update.hasParams, isTrue);

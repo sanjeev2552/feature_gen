@@ -2,6 +2,7 @@ import 'package:args/args.dart';
 import 'package:feature_gen_cli/command_helper.dart';
 import 'package:feature_gen_cli/command_runner.dart';
 import 'package:feature_gen_cli/generator.dart';
+import 'package:feature_gen_cli/input_resolver.dart';
 import 'package:feature_gen_cli/parser.dart';
 
 /// Orchestrates the full feature generation pipeline:
@@ -20,25 +21,39 @@ class FeatureGen {
     Generator? generator,
     CommandRunner? commandRunner,
     CommandHelper? commandHelper,
+    InputResolver? inputResolver,
   })  : _parser = parser ?? Parser(),
         _generator = generator ?? Generator(),
         _commandRunner = commandRunner ?? CommandRunner(),
-        _commandHelper = commandHelper ?? CommandHelper();
+        _commandHelper = commandHelper ?? CommandHelper(),
+        _inputResolver = inputResolver ?? InputResolver();
 
   final Parser _parser;
   final Generator _generator;
   final CommandRunner _commandRunner;
   final CommandHelper _commandHelper;
+  final InputResolver _inputResolver;
 
   /// Runs the complete pipeline using the parsed CLI [results].
   Future<void> generate(ArgResults results) async {
-    final featureName = results.rest.first;
+    final inputPath = results['input'] as String?;
+    late final String featureName;
+    late final String schemaPath;
+    if (inputPath != null && inputPath.isNotEmpty) {
+      final resolved = _inputResolver.resolve(inputPath);
+      featureName = resolved.featureName;
+      schemaPath = resolved.schemaPath;
+    } else {
+      featureName = results.rest.first;
+      schemaPath = results.rest[1];
+    }
+
     _commandHelper.success('Generating feature: $featureName', shouldExit: false);
     final overwrite = results['overwrite'] == true;
 
     try {
       // Parse the user's schema and translate it into a template context.
-      final schema = _parser.parse(results.rest[1]);
+      final schema = _parser.parse(schemaPath);
       final context = await _parser.buildContext(featureName, schema);
 
       // Ensure required dependencies exist before generating files.
