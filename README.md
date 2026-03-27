@@ -6,7 +6,7 @@ Feature Gen is a Dart CLI that scaffolds clean-architecture feature modules for 
 
 ## Quick Start
 
-**Requirements:** Dart SDK `>=3.10.4`, a Flutter project with a valid `pubspec.yaml`, and `dart` on your PATH.
+**Requirements:** Dart SDK `>=3.10.4`, a Flutter project with a valid `pubspec.yaml`, and `dart` on your PATH. Run the CLI from the Flutter project root so `pubspec.yaml` resolution works.
 
 ```bash
 # 1. Install
@@ -18,6 +18,16 @@ feature_gen_cli <feature_name> <schema.json>
 
 # Overwrite existing generated files (optional)
 feature_gen_cli <feature_name> <schema.json> --overwrite
+```
+
+Feature names should be lowercase `snake_case` (the generated folder is `lib/features/<feature_name>/`).
+
+### CLI Options
+
+```bash
+feature_gen_cli <feature_name> <schema.json> -o   # overwrite existing generated files
+feature_gen_cli --version                          # print package version
+feature_gen_cli --help                             # show help
 ```
 
 ## Schema Reference
@@ -38,7 +48,7 @@ The schema is a single JSON file requiring three sections: `config`, `api.method
 }
 ```
 
-- **`config`**: Enable exactly one state management option (`bloc` or `riverpod`).
+- **`config`**: Both keys (`bloc` and `riverpod`) are required; exactly one must be `true`.
 - **`api.methods`**: Define endpoints (camelCase). Optionally include `params`, `body`, or `query` to generate `UseCase` and param classes.
 - **`response`**: Define base entity/model fields. Wrap in an array for lists (e.g., `[ { "id": "int" } ]`). Supports primitives (`"string"`, `"int"`, `"double"`, `"bool"`, `"list"`, `"map"`) and nested objects.
 
