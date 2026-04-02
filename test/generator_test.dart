@@ -131,6 +131,7 @@ void main() {
       final base = '${tempDir.path}/lib/features/user';
       expect(File('$base/presentation/getx/user_controller.dart').existsSync(), isTrue);
       expect(File('$base/presentation/getx/user_binding.dart').existsSync(), isTrue);
+      expect(File('$base/presentation/getx/user_state.dart').existsSync(), isTrue);
       expect(File('$base/presentation/screen/user_screen.dart').existsSync(), isTrue);
       expect(File('$base/presentation/bloc/user_bloc.dart').existsSync(), isFalse);
       expect(File('$base/presentation/riverpod/user_notifier.dart').existsSync(), isFalse);

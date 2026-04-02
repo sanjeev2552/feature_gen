@@ -277,6 +277,16 @@ class Generator {
     // ── Presentation — GetX ───────────────────────────────────────────
     if (context.config.getx == true) {
       renderTemplate(
+        '$templateBasePath/presentation/getx/state.mustache',
+        '$basePath/presentation/getx/${featureName}_state.dart',
+        {
+          ...baseCtx(),
+          'methods': enrichedMethods(context.methods),
+        },
+        overwrite: overwrite,
+      );
+
+      renderTemplate(
         '$templateBasePath/presentation/getx/controller.mustache',
         '$basePath/presentation/getx/${featureName}_controller.dart',
         {

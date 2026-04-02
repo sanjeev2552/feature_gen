@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:injectable/injectable.dart';
 
+import 'package:{{projectName}}/features/{{nameLowerCase}}/presentation/getx/{{nameLowerCase}}_state.dart';
+
 {{^isMultiResponse}}
 import 'package:{{projectName}}/features/{{nameLowerCase}}/domain/entities/{{nameLowerCase}}_entity.dart';
 {{/isMultiResponse}}
@@ -29,32 +31,28 @@ class {{name}}Controller extends GetxController {
     }) : {{#methods}}_{{methodName}}UseCase = {{methodName}}UseCase,{{/methods}}
     super();
 
-    final state = Rx<{{^isMultiResponse}}{{#isList}}List<{{/isList}}{{name}}Entity{{#isList}}>{{/isList}}?{{/isMultiResponse}}{{#isMultiResponse}}dynamic{{/isMultiResponse}}>(null);
-    final isLoading = false.obs;
-    final errorMessage = Rx<String?>(null);
+    final state = const {{name}}State.initial().obs;
 
     {{#methods}}
     Future<void> {{methodName}}({{#hasUseCase}}{{methodNamePascalCase}}{{/hasUseCase}}{{^hasUseCase}}No{{/hasUseCase}}Params param) async {
         try {
-            isLoading.value = true;
-            errorMessage.value = null;
+            state.value = const {{name}}State.loading();
             {{^isMultiResponse}}
             final result = await _{{methodName}}UseCase(param);
-            state.value = result;
+            state.value = {{name}}State.success(result);
             {{/isMultiResponse}}
             {{#isMultiResponse}}
             {{#hasResponse}}
             final result = await _{{methodName}}UseCase(param);
-            state.value = result;
+            state.value = {{name}}State.{{methodName}}Success(result);
             {{/hasResponse}}
             {{^hasResponse}}
             await _{{methodName}}UseCase(param);
+            state.value = const {{name}}State.{{methodName}}Success();
             {{/hasResponse}}
             {{/isMultiResponse}}
         } catch (e) {
-            errorMessage.value = e.toString();
-        } finally {
-            isLoading.value = false;
+            state.value = {{name}}State.error(e.toString());
         }
     }
     {{/methods}}
